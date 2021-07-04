@@ -1,3 +1,6 @@
+# IDE
+.idea/
+
 # Cache and logs (Symfony2)
 /app/cache/*
 /app/logs/*
