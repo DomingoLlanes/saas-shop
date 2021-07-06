@@ -1,0 +1,14 @@
+framework:
+  test: true
+
+services:
+  _defaults:
+    autoconfigure: true
+    autowire: true
+
+  ShopSaas\Tests\:
+    resource: '../../../../tests'
+
+  # Instance selector
+  ShopSaas\Shared\Domain\RandomNumberGenerator: '@ShopSaas\Tests\Shared\Infrastructure\ConstantRandomNumberGenerator'
+#  ShopSaas\Shared\Domain\Bus\Event\EventBus: '@ShopSaas\Shared\Infrastructure\Bus\Event\InMemory\InMemorySymfonyEventBus'

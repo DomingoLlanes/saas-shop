@@ -1,0 +1,13 @@
+framework:
+  test: true
+
+services:
+  _defaults:
+    autoconfigure: true
+    autowire: true
+
+  ShopSaas\Tests\:
+    resource: '../../../../tests'
+
+  # -- IMPLEMENTATIONS SELECTOR --
+  ShopSaas\Shared\Domain\Bus\Event\EventBus: '@ShopSaas\Shared\Infrastructure\Bus\Event\InMemory\InMemorySymfonyEventBus'

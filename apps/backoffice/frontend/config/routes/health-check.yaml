@@ -1,0 +1,4 @@
+health-check_get:
+  path: /health-check
+  controller: ShopSaas\Apps\Backoffice\Frontend\Controller\HealthCheck\HealthCheckGetController
+  methods:  [GET]

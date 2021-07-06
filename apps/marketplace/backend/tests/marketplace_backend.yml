@@ -1,0 +1,29 @@
+marketplace_backend:
+  extensions:
+    FriendsOfBehat\SymfonyExtension:
+      kernel:
+        class: ShopSaas\Apps\Marketplace\Backend\MarketplaceBackendKernel
+      bootstrap: apps/bootstrap.php
+    Behat\MinkExtension:
+      sessions:
+        symfony:
+          symfony: ~
+      base_url: ''
+
+  suites:
+    health_check:
+      paths: [ apps/marketplace/backend/tests/features/health_check ]
+      contexts:
+        - ShopSaas\Tests\Shared\Infrastructure\Behat\ApiContext
+
+    courses:
+      paths: [ apps/marketplace/backend/tests/features/courses ]
+      contexts:
+        - ShopSaas\Tests\Shared\Infrastructure\Behat\ApplicationFeatureContext
+        - ShopSaas\Tests\Shared\Infrastructure\Behat\ApiContext
+
+    courses_counter:
+      paths: [ apps/marketplace/backend/tests/features/courses_counter ]
+      contexts:
+        - ShopSaas\Tests\Shared\Infrastructure\Behat\ApplicationFeatureContext
+        - ShopSaas\Tests\Shared\Infrastructure\Behat\ApiContext

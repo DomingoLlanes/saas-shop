@@ -1,0 +1,4 @@
+courses_counter_get:
+  path: /courses-counter
+  controller: ShopSaas\Apps\Marketplace\Backend\Controller\CoursesCounter\CoursesCounterGetController
+  methods:  [GET]

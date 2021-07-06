@@ -1,0 +1,2 @@
+imports:
+  - apps/marketplace/backend/tests/marketplace_backend.yml

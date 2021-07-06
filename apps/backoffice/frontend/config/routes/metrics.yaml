@@ -1,0 +1,4 @@
+metrics_get:
+  path: /metrics
+  controller: ShopSaas\Apps\Backoffice\Frontend\Controller\Metrics\MetricsController
+  methods:  [GET]

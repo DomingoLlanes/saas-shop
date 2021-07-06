@@ -1,0 +1,19 @@
+services:
+  # Databases
+  Doctrine\ORM\EntityManager:
+    factory: [ ShopSaas\Marketplace\Shared\Infrastructure\Doctrine\MoocEntityManagerFactory, create ]
+    arguments:
+      - driver: '%env(MARKETPLACE_DATABASE_DRIVER)%'
+        host: '%env(MARKETPLACE_DATABASE_HOST)%'
+        port: '%env(MARKETPLACE_DATABASE_PORT)%'
+        dbname: '%env(MARKETPLACE_DATABASE_NAME)%'
+        user: '%env(MARKETPLACE_DATABASE_USER)%'
+        password: '%env(MARKETPLACE_DATABASE_PASSWORD)%'
+      - '%env(APP_ENV)%'
+    tags:
+      - { name: codely.database_connection }
+    public: true
+
+
+  # Courses
+  ShopSaas\Marketplace\Courses\Domain\CourseRepository: '@ShopSaas\Marketplace\Courses\Infrastructure\Persistence\DoctrineCourseRepository'

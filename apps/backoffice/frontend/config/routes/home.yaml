@@ -1,0 +1,4 @@
+home_get:
+  path: /
+  controller: ShopSaas\Apps\Backoffice\Frontend\Controller\Home\HomeGetWebController
+  methods:  [GET]

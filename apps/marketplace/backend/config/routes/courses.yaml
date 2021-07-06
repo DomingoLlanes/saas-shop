@@ -1,0 +1,4 @@
+courses_put:
+  path: /courses/{id}
+  controller: ShopSaas\Apps\Marketplace\Backend\Controller\Courses\CoursesPutController
+  methods:  [PUT]

@@ -1,0 +1,98 @@
+imports:
+  - { resource: ../../../../src/Backoffice/Shared/Infrastructure/Symfony/DependencyInjection/backoffice_services.yaml }
+
+services:
+  _defaults:
+    autoconfigure: true
+    autowire: true
+
+  # Configure
+  _instanceof:
+    ShopSaas\Shared\Domain\Bus\Event\DomainEventSubscriber:
+      tags: ['shopsaas.domain_event_subscriber']
+
+    ShopSaas\Shared\Domain\Bus\Command\CommandHandler:
+      tags: ['shopsaas.command_handler']
+
+    ShopSaas\Shared\Domain\Bus\Query\QueryHandler:
+      tags: ['shopsaas.query_handler']
+
+  ShopSaas\Apps\Backoffice\Backend\Controller\:
+    resource: '../src/Controller'
+    tags: ['controller.service_arguments']
+
+
+  # Wire
+  ShopSaas\Shared\:
+    resource: '../../../../src/Shared'
+
+  ShopSaas\Backoffice\:
+    resource: '../../../../src/Backoffice'
+
+  # -- TAGGING --
+  ShopSaas\Shared\Infrastructure\Bus\Event\InMemory\InMemorySymfonyEventBus:
+    arguments: [!tagged shopsaas.domain_event_subscriber]
+    lazy: true
+
+  ShopSaas\Shared\Infrastructure\Bus\Event\DomainEventMapping:
+    arguments: [!tagged shopsaas.domain_event_subscriber]
+
+  ShopSaas\Shared\Infrastructure\Bus\Event\DomainEventSubscriberLocator:
+    arguments: [!tagged shopsaas.domain_event_subscriber]
+
+  ShopSaas\Shared\Infrastructure\Doctrine\DatabaseConnections:
+    arguments: [!tagged shopsaas.database_connection]
+
+  ShopSaas\Shared\Infrastructure\Symfony\AddJsonBodyToRequestListener:
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+  ShopSaas\Shared\Infrastructure\Symfony\ApiExceptionListener:
+    tags:
+      - { name: kernel.event_listener, event: kernel.exception, method: onException }
+
+  ShopSaas\Shared\Infrastructure\Symfony\BasicHttpAuthMiddleware:
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+
+  # -- APP DEFINITIONS --
+  # Command/Query Handlers
+  ShopSaas\Shared\Infrastructure\Bus\Command\InMemorySymfonyCommandBus:
+    arguments: [!tagged shopsaas.command_handler]
+
+  ShopSaas\Shared\Infrastructure\Bus\Query\InMemorySymfonyQueryBus:
+    arguments: [!tagged shopsaas.query_handler]
+
+  # RabbitMQ
+  ShopSaas\Shared\Infrastructure\Bus\Event\RabbitMq\RabbitMqConnection:
+    arguments:
+      - host: '%env(RABBITMQ_HOST)%'
+        port: '%env(RABBITMQ_PORT)%'
+        vhost: '%env(RABBITMQ_MARKETPLACE_VHOST)%'
+        login: '%env(RABBITMQ_LOGIN)%'
+        password: '%env(RABBITMQ_PASSWORD)%'
+        read_timeout: 2
+        write_timeout: 2
+        connect_timeout: 5
+
+  ShopSaas\Shared\Infrastructure\Bus\Event\RabbitMq\RabbitMqEventBus:
+    arguments: ['@ShopSaas\Shared\Infrastructure\Bus\Event\RabbitMq\RabbitMqConnection', '%env(RABBITMQ_EXCHANGE)%']
+
+  ShopSaas\Shared\Infrastructure\Elasticsearch\ElasticsearchClient:
+    factory: '@ShopSaas\Shared\Infrastructure\Elasticsearch\ElasticsearchClientFactory'
+    arguments:
+      - '%env(BACKOFFICE_ELASTICSEARCH_HOST)%'
+      - '%env(BACKOFFICE_ELASTICSEARCH_INDEX_PREFIX)%'
+      - '%kernel.project_dir%/../../../etc/databases/backoffice'
+      - '%env(APP_ENV)%'
+    public: true
+
+  ShopSaas\Shared\Infrastructure\Bus\Event\WithMonitoring\WithPrometheusMonitoringEventBus:
+    arguments: ['@ShopSaas\Shared\Infrastructure\Monitoring\PrometheusMonitor', 'backoffice_backend', '@ShopSaas\Shared\Infrastructure\Bus\Event\RabbitMq\RabbitMqEventBus']
+
+  # -- IMPLEMENTATIONS SELECTOR --
+
+  # -- IMPLEMENTATIONS SELECTOR --
+  ShopSaas\Shared\Domain\Bus\Event\EventBus: '@ShopSaas\Shared\Infrastructure\Bus\Event\WithMonitoring\WithPrometheusMonitoringEventBus'
+  ShopSaas\Backoffice\Courses\Domain\BackofficeCourseRepository: '@ShopSaas\Backoffice\Courses\Infrastructure\Persistence\ElasticsearchBackofficeCourseRepository'

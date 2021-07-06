@@ -1,0 +1,98 @@
+imports:
+  - { resource: ../../../../src/Marketplace/Shared/Infrastructure/Symfony/DependencyInjection/marketplace_services.yaml }
+
+services:
+  _defaults:
+    autoconfigure: true
+    autowire: true
+
+  # Configure
+  _instanceof:
+    ShopSaas\Shared\Domain\Bus\Event\DomainEventSubscriber:
+      tags: ['shopsaas.domain_event_subscriber']
+
+    ShopSaas\Shared\Domain\Bus\Command\CommandHandler:
+      tags: ['shopsaas.command_handler']
+
+    ShopSaas\Shared\Domain\Bus\Query\QueryHandler:
+      tags: ['shopsaas.query_handler']
+
+  ShopSaas\Apps\Marketplace\Backend\Controller\:
+    resource: '../src/Controller'
+    tags: ['controller.service_arguments']
+
+  ShopSaas\Apps\Marketplace\Backend\Command\:
+    resource: '../src/Command'
+    tags: ['console.command']
+
+  # Wire
+  ShopSaas\Shared\:
+    resource: '../../../../src/Shared'
+
+  ShopSaas\Marketplace\:
+    resource: '../../../../src/Marketplace'
+
+  # -- TAGGING --
+  ShopSaas\Shared\Infrastructure\Bus\Event\InMemory\InMemorySymfonyEventBus:
+    arguments: [!tagged shopsaas.domain_event_subscriber]
+    lazy: true
+
+  ShopSaas\Shared\Infrastructure\Bus\Event\DomainEventMapping:
+    arguments: [!tagged shopsaas.domain_event_subscriber]
+
+  ShopSaas\Shared\Infrastructure\Bus\Event\DomainEventSubscriberLocator:
+    arguments: [!tagged shopsaas.domain_event_subscriber]
+
+  ShopSaas\Shared\Infrastructure\Doctrine\DatabaseConnections:
+    arguments: [!tagged shopsaas.database_connection]
+
+  ShopSaas\Shared\Infrastructure\Symfony\AddJsonBodyToRequestListener:
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+  ShopSaas\Shared\Infrastructure\Symfony\ApiExceptionListener:
+    tags:
+      - { name: kernel.event_listener, event: kernel.exception, method: onException }
+
+
+  # -- APP DEFINITIONS --
+  # Command/Query Handlers
+  ShopSaas\Shared\Infrastructure\Bus\Command\InMemorySymfonyCommandBus:
+    arguments: [!tagged shopsaas.command_handler]
+
+  ShopSaas\Shared\Infrastructure\Bus\Query\InMemorySymfonyQueryBus:
+    arguments: [!tagged shopsaas.query_handler]
+
+  # RabbitMQ
+  ShopSaas\Shared\Infrastructure\Bus\Event\RabbitMq\RabbitMqConnection:
+    arguments:
+      - host: '%env(RABBITMQ_HOST)%'
+        port: '%env(RABBITMQ_PORT)%'
+        vhost: '%env(RABBITMQ_MARKETPLACE_VHOST)%'
+        login: '%env(RABBITMQ_LOGIN)%'
+        password: '%env(RABBITMQ_PASSWORD)%'
+        read_timeout: 2
+        write_timeout: 2
+        connect_timeout: 5
+
+  ShopSaas\Shared\Infrastructure\Bus\Event\RabbitMq\RabbitMqEventBus:
+    arguments: ['@ShopSaas\Shared\Infrastructure\Bus\Event\RabbitMq\RabbitMqConnection', '%env(RABBITMQ_EXCHANGE)%']
+
+  ShopSaas\Shared\Infrastructure\Bus\Event\RabbitMq\RabbitMqDomainEventsConsumer:
+    arguments:
+      - '@ShopSaas\Shared\Infrastructure\Bus\Event\RabbitMq\RabbitMqConnection'
+      - '@ShopSaas\Shared\Infrastructure\Bus\Event\DomainEventJsonDeserializer'
+      - '%env(RABBITMQ_EXCHANGE)%'
+      - '%env(RABBITMQ_MAX_RETRIES)%'
+
+  ShopSaas\Apps\Marketplace\Backend\Command\DomainEvents\RabbitMq\ConfigureRabbitMqCommand:
+    arguments:
+      - '@ShopSaas\Shared\Infrastructure\Bus\Event\RabbitMq\RabbitMqConfigurer'
+      - '%env(RABBITMQ_EXCHANGE)%'
+      - !tagged shopsaas.domain_event_subscriber
+
+  ShopSaas\Shared\Infrastructure\Bus\Event\WithMonitoring\WithPrometheusMonitoringEventBus:
+    arguments: ['@ShopSaas\Shared\Infrastructure\Monitoring\PrometheusMonitor', 'marketplace_backend', '@ShopSaas\Shared\Infrastructure\Bus\Event\RabbitMq\RabbitMqEventBus']
+
+  # -- IMPLEMENTATIONS SELECTOR --
+  ShopSaas\Shared\Domain\Bus\Event\EventBus: '@ShopSaas\Shared\Infrastructure\Bus\Event\WithMonitoring\WithPrometheusMonitoringEventBus'
