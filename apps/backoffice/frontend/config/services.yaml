@@ -35,17 +35,17 @@ services:
 
   # -- TAGGING --
   ShopSaas\Shared\Infrastructure\Bus\Event\InMemory\InMemorySymfonyEventBus:
-    arguments: [!tagged codely.domain_event_subscriber]
+    arguments: [!tagged shopsaas.domain_event_subscriber]
     lazy: true
 
   ShopSaas\Shared\Infrastructure\Bus\Event\DomainEventMapping:
-    arguments: [!tagged codely.domain_event_subscriber]
+    arguments: [!tagged shopsaas.domain_event_subscriber]
 
   ShopSaas\Shared\Infrastructure\Bus\Event\DomainEventSubscriberLocator:
-    arguments: [!tagged codely.domain_event_subscriber]
+    arguments: [!tagged shopsaas.domain_event_subscriber]
 
   ShopSaas\Shared\Infrastructure\Doctrine\DatabaseConnections:
-    arguments: [!tagged codely.database_connection]
+    arguments: [!tagged shopsaas.database_connection]
 
   ShopSaas\Shared\Infrastructure\Symfony\ApiExceptionListener:
     tags:
@@ -59,10 +59,10 @@ services:
   # -- APP DEFINITIONS --
   # Command/Query Handlers
   ShopSaas\Shared\Infrastructure\Bus\Command\InMemorySymfonyCommandBus:
-    arguments: [!tagged codely.command_handler]
+    arguments: [!tagged shopsaas.command_handler]
 
   ShopSaas\Shared\Infrastructure\Bus\Query\InMemorySymfonyQueryBus:
-    arguments: [!tagged codely.query_handler]
+    arguments: [!tagged shopsaas.query_handler]
 
   # RabbitMQ
   ShopSaas\Shared\Infrastructure\Bus\Event\RabbitMq\RabbitMqConnection:

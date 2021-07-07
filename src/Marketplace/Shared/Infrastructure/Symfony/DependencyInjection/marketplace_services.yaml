@@ -11,7 +11,7 @@ services:
         password: '%env(MARKETPLACE_DATABASE_PASSWORD)%'
       - '%env(APP_ENV)%'
     tags:
-      - { name: codely.database_connection }
+      - { name: shopsaas.database_connection }
     public: true
 
 
