@@ -7,6 +7,8 @@ namespace ShopSaas\Tests\Shared\Infrastructure\Behat;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Mink\Session;
 use Behat\MinkExtension\Context\RawMinkContext;
+use JsonException;
+use Ramsey\Uuid\Uuid;
 use ShopSaas\Tests\Shared\Infrastructure\Mink\MinkHelper;
 use ShopSaas\Tests\Shared\Infrastructure\Mink\MinkSessionRequestHelper;
 use RuntimeException;
@@ -63,6 +65,26 @@ final class ApiContext extends RawMinkContext
         if (!empty($actual)) {
             throw new RuntimeException(
                 sprintf("The outputs is not empty, Actual:\n%s", $actual)
+            );
+        }
+    }
+
+    /**
+     * @Then the response should contains an uuid
+     */
+    public function theResponseShouldContainsAnUuid(): void
+    {
+        $actualResponse = trim($this->sessionHelper->getResponse());
+
+        try {
+            $actual = json_decode($actualResponse, true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            throw new RuntimeException(sprintf("The outputs cannot be parsed to JSON, Actual:\n%s", $actualResponse));
+        }
+
+        if (!Uuid::isValid($actual['id'])) {
+            throw new RuntimeException(
+                sprintf("The outputs doesn't contain an Uuid inside id attribute, Actual:\n%s", $actual)
             );
         }
     }

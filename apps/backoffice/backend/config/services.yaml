@@ -96,3 +96,4 @@ services:
   # -- IMPLEMENTATIONS SELECTOR --
   ShopSaas\Shared\Domain\Bus\Event\EventBus: '@ShopSaas\Shared\Infrastructure\Bus\Event\WithMonitoring\WithPrometheusMonitoringEventBus'
   ShopSaas\Backoffice\Courses\Domain\BackofficeCourseRepository: '@ShopSaas\Backoffice\Courses\Infrastructure\Persistence\ElasticsearchBackofficeCourseRepository'
+  ShopSaas\Backoffice\Auth\Domain\AuthRepository: '@ShopSaas\Backoffice\Auth\Infrastructure\Persistence\DoctrineAuthRepository'

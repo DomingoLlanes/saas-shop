@@ -1,7 +1,7 @@
 services:
   # Databases
   Doctrine\ORM\EntityManager:
-    factory: [ ShopSaas\Marketplace\Shared\Infrastructure\Doctrine\MoocEntityManagerFactory, create ]
+    factory: [ ShopSaas\Marketplace\Shared\Infrastructure\Doctrine\MarketplaceEntityManagerFactory, create ]
     arguments:
       - driver: '%env(MARKETPLACE_DATABASE_DRIVER)%'
         host: '%env(MARKETPLACE_DATABASE_HOST)%'

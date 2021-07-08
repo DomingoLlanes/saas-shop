@@ -1,2 +1,3 @@
 imports:
   - apps/marketplace/backend/tests/marketplace_backend.yml
+  - apps/backoffice/backend/tests/backoffice_backend.yml

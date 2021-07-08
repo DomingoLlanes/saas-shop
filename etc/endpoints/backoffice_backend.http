@@ -1,0 +1,10 @@
+# Register an user
+POST localhost:8040/auth/register
+Content-Type: application/json
+
+{
+  "username": "user_test",
+  "password": "test"
+}
+
+###

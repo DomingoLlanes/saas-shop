@@ -1,0 +1,23 @@
+backoffice_backend:
+  extensions:
+    FriendsOfBehat\SymfonyExtension:
+      kernel:
+        class: ShopSaas\Apps\Backoffice\Backend\BackofficeBackendKernel
+      bootstrap: apps/bootstrap.php
+    Behat\MinkExtension:
+      sessions:
+        symfony:
+          symfony: ~
+      base_url: ''
+
+  suites:
+    health_check:
+      paths: [ apps/backoffice/backend/tests/features/health_check ]
+      contexts:
+        - ShopSaas\Tests\Shared\Infrastructure\Behat\ApiContext
+
+    auth:
+      paths: [ apps/backoffice/backend/tests/features/auth ]
+      contexts:
+        - ShopSaas\Tests\Shared\Infrastructure\Behat\ApplicationFeatureContext
+        - ShopSaas\Tests\Shared\Infrastructure\Behat\ApiContext

@@ -6,5 +6,7 @@ namespace ShopSaas\Backoffice\Auth\Domain;
 
 interface AuthRepository
 {
+    public function save(AuthUser $user): void;
+
     public function search(AuthUsername $username): ?AuthUser;
 }

@@ -41,6 +41,7 @@ test: composer-env-file
 	docker exec domingollanes-shop_saas-marketplace_backend-php ./vendor/bin/phpunit --testsuite marketplace
 	docker exec domingollanes-shop_saas-marketplace_backend-php ./vendor/bin/phpunit --testsuite shared
 	docker exec domingollanes-shop_saas-marketplace_backend-php ./vendor/bin/behat -p marketplace_backend --format=progress -v
+	docker exec domingollanes-shop_saas-marketplace_backend-php ./vendor/bin/behat -p backoffice_backend --format=progress -v
 	docker exec domingollanes-shop_saas-backoffice_backend-php ./vendor/bin/phpunit --testsuite backoffice
 
 .PHONY: static-analysis
@@ -54,6 +55,7 @@ run-tests: composer-env-file
 	./vendor/bin/phpunit --exclude-group='disabled' --log-junit build/test_results/phpunit/junit.xml --testsuite marketplace
 	./vendor/bin/phpunit --exclude-group='disabled' --log-junit build/test_results/phpunit/junit.xml --testsuite shared
 	./vendor/bin/behat -p marketplace_backend --format=progress -v
+	./vendor/bin/behat -p backoffice_backend --format=progress -v
 
 # 🐳 Docker Compose
 .PHONY: start

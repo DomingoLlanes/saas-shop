@@ -7,7 +7,7 @@ namespace ShopSaas\Marketplace\Shared\Infrastructure\Doctrine;
 use ShopSaas\Shared\Infrastructure\Doctrine\DoctrineEntityManagerFactory;
 use Doctrine\ORM\EntityManagerInterface;
 
-final class MoocEntityManagerFactory
+final class MarketplaceEntityManagerFactory
 {
     private const SCHEMA_PATH = __DIR__ . '/../../../../../etc/databases/marketplace.sql';
 
@@ -15,10 +15,7 @@ final class MoocEntityManagerFactory
     {
         $isDevMode = 'prod' !== $environment;
 
-        $prefixes = array_merge(
-            DoctrinePrefixesSearcher::inPath(__DIR__ . '/../../../../Marketplace', 'ShopSaas\Marketplace'),
-            DoctrinePrefixesSearcher::inPath(__DIR__ . '/../../../../Backoffice', 'ShopSaas\Backoffice')
-        );
+        $prefixes = DoctrinePrefixesSearcher::inPath(__DIR__ . '/../../../../Marketplace', 'ShopSaas\Marketplace');
 
         $dbalCustomTypesClasses = DbalTypesSearcher::inPath(__DIR__ . '/../../../../Marketplace', 'Marketplace');
 

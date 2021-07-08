@@ -10,7 +10,6 @@
         <directory name="apps/backoffice/backend/src" />
         <directory name="apps/backoffice/frontend/src" />
         <directory name="apps/marketplace/backend/src" />
-        <directory name="apps/marketplace/frontend/src" />
         <directory name="src" />
         <directory name="tests" />
         <ignoreFiles>
