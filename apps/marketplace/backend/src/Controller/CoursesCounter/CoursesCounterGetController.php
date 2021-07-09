@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ShopSaas\Apps\Marketplace\Backend\Controller\CoursesCounter;
 
-use ShopSaas\Marketplace\CoursesCounter\Application\Find\AuthUserResponse;
-use ShopSaas\Marketplace\CoursesCounter\Application\Find\FindAuthUserQuery;
+use ShopSaas\Marketplace\CoursesCounter\Application\Find\CoursesCounterResponse;
+use ShopSaas\Marketplace\CoursesCounter\Application\Find\FindCoursesCounterQuery;
 use ShopSaas\Marketplace\CoursesCounter\Domain\CoursesCounterNotExist;
 use ShopSaas\Shared\Infrastructure\Symfony\ApiController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,8 +15,8 @@ final class CoursesCounterGetController extends ApiController
 {
     public function __invoke(): JsonResponse
     {
-        /** @var AuthUserResponse $response */
-        $response = $this->ask(new FindAuthUserQuery());
+        /** @var CoursesCounterResponse $response */
+        $response = $this->ask(new FindCoursesCounterQuery());
 
         return new JsonResponse(
             [
