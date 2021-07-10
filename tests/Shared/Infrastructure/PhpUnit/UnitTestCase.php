@@ -85,6 +85,13 @@ abstract class UnitTestCase extends MockeryTestCase
         $queryHandler($query);
     }
 
+    protected function assertCommandThrowsException(string $expectedErrorClass, Command $command, callable $commandHandler): void
+    {
+        $this->expectException($expectedErrorClass);
+
+        $commandHandler($command);
+    }
+
     protected function isSimilar($expected, $actual): bool
     {
         return TestUtils::isSimilar($expected, $actual);

@@ -8,3 +8,13 @@ Content-Type: application/json
 }
 
 ###
+# Login an user
+POST localhost:8040/auth/login
+Content-Type: application/json
+
+{
+  "username": "user_test",
+  "password": "test"
+}
+
+###

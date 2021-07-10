@@ -9,7 +9,7 @@ use ShopSaas\Backoffice\Auth\Application\Registrar\RegistrarUserCommand;
 use ShopSaas\Backoffice\Auth\Domain\AuthUserAlreadyRegistered;
 use ShopSaas\Backoffice\Auth\Domain\AuthUsername;
 use ShopSaas\Backoffice\Auth\Domain\AuthUserNotFound;
-use ShopSaas\Shared\Infrastructure\PhpPasswordEncoder;
+use ShopSaas\Shared\Domain\PhpPasswordEncoder;
 use ShopSaas\Shared\Infrastructure\RamseyUuidGenerator;
 use ShopSaas\Shared\Infrastructure\Symfony\ApiController;
 use Symfony\Component\HttpFoundation\JsonResponse;

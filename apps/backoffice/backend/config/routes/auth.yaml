@@ -3,3 +3,9 @@ auth-register_post:
   controller: ShopSaas\Apps\Backoffice\Backend\Controller\Auth\AuthRegisterPostController
   defaults: { auth: false }
   methods:  [POST]
+
+auth-login_post:
+  path: /auth/login
+  controller: ShopSaas\Apps\Backoffice\Backend\Controller\Auth\AuthLoginPostController
+  defaults: { auth: false }
+  methods:  [POST]

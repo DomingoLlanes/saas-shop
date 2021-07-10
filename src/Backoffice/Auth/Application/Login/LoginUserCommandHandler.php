@@ -2,23 +2,24 @@
 
 declare(strict_types=1);
 
-namespace ShopSaas\Backoffice\Auth\Application\Authenticate;
+namespace ShopSaas\Backoffice\Auth\Application\Login;
 
+use ShopSaas\Backoffice\Auth\Domain\AuthPassword;
 use ShopSaas\Backoffice\Auth\Domain\AuthPlainPassword;
 use ShopSaas\Backoffice\Auth\Domain\AuthUsername;
 use ShopSaas\Shared\Domain\Bus\Command\CommandHandler;
 
-final class AuthenticateUserCommandHandler implements CommandHandler
+class LoginUserCommandHandler implements CommandHandler
 {
-    public function __construct(private UserAuthenticator $authenticator)
+    public function __construct(private UserLogin $login)
     {
     }
 
-    public function __invoke(AuthenticateUserCommand $command): void
+    public function __invoke(LoginUserCommand $command)
     {
         $username = new AuthUsername($command->username());
         $password = new AuthPlainPassword($command->password());
 
-        $this->authenticator->authenticate($username, $password);
+        $this->login->__invoke($username, $password);
     }
 }

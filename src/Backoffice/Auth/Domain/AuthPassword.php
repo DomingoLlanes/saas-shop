@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace ShopSaas\Backoffice\Auth\Domain;
 
-use ShopSaas\Shared\Domain\ValueObject\StringValueObject;
+use ShopSaas\Shared\Domain\ValueObject\Password;
 
-final class AuthPassword extends StringValueObject
+final class AuthPassword extends Password
 {
-    public function isEquals(AuthPassword $other): bool
-    {
-        return $this->value() === $other->value();
-    }
 }

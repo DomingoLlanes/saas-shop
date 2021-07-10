@@ -6,7 +6,7 @@ namespace ShopSaas\Shared\Domain;
 
 interface PasswordEncoder
 {
-    public function encode(string $password): string;
+    public static function encode(string $password): string;
 
-    public function verify(string $plainPassword, string $hashedPassword): bool;
+    public static function verify(string $plainPassword, string $hashedPassword): bool;
 }

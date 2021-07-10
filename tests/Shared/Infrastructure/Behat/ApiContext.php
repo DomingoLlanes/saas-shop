@@ -90,6 +90,27 @@ final class ApiContext extends RawMinkContext
     }
 
     /**
+     * @Then the response should contains a JWT token
+     */
+    public function theResponseShouldContainsAJWTToken(): void
+    {
+        $actualResponse = trim($this->sessionHelper->getResponse());
+        $JWTStringCheck = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzUxMiJ9.';
+
+        try {
+            $actual = json_decode($actualResponse, true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            throw new RuntimeException(sprintf("The outputs cannot be parsed to JSON, Actual:\n%s", $actualResponse));
+        }
+
+        if (false === str_starts_with($actual['data'], $JWTStringCheck)) {
+            throw new RuntimeException(
+                sprintf("The outputs doesn't contain an Uuid inside id attribute, Actual:\n%s", $actual)
+            );
+        }
+    }
+
+    /**
      * @Then print last api response
      */
     public function printApiResponse(): void
