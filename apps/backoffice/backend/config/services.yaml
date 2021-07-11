@@ -51,7 +51,7 @@ services:
     tags:
       - { name: kernel.event_listener, event: kernel.exception, method: onException }
 
-  ShopSaas\Shared\Infrastructure\Symfony\BasicHttpAuthMiddleware:
+  ShopSaas\Shared\Infrastructure\Symfony\JWTAuthMiddleware:
     tags:
       - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 

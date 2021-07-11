@@ -31,7 +31,7 @@ final class AuthUserMother
         return self::create(
             AuthIdMother::create(),
             AuthUsernameMother::create($command->username()),
-            AuthPasswordMother::create($command->password())
+            AuthPasswordMother::create()
         );
     }
 

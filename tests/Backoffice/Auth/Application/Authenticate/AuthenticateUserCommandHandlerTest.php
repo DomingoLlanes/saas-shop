@@ -46,17 +46,4 @@ final class AuthenticateUserCommandHandlerTest extends AuthModuleUnitTestCase
 
         $this->dispatch($command, $this->handler);
     }
-
-    /** @test */
-    public function it_should_throw_an_exception_when_the_password_does_not_math(): void
-    {
-        $this->expectException(InvalidAuthCredentials::class);
-
-        $command  = AuthenticateUserCommandMother::create();
-        $authUser = AuthUserMother::create(username: AuthUsernameMother::create($command->username()));
-
-        $this->shouldSearch($authUser->username(), $authUser);
-
-        $this->dispatch($command, $this->handler);
-    }
 }
