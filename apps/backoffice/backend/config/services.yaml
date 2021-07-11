@@ -91,6 +91,11 @@ services:
   ShopSaas\Shared\Infrastructure\Bus\Event\WithMonitoring\WithPrometheusMonitoringEventBus:
     arguments: ['@ShopSaas\Shared\Infrastructure\Monitoring\PrometheusMonitor', 'backoffice_backend', '@ShopSaas\Shared\Infrastructure\Bus\Event\RabbitMq\RabbitMqEventBus']
 
+  ShopSaas\Shared\Infrastructure\Token\JWTToken:
+    arguments:
+      $expiresIn: '%env(JWT_EXPIRES_IN)'
+    public: true
+
   # -- IMPLEMENTATIONS SELECTOR --
 
   # -- IMPLEMENTATIONS SELECTOR --

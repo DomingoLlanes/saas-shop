@@ -21,9 +21,19 @@ final class AuthUser extends AggregateRoot
         return $authUser;
     }
 
-    public function passwordMatches(AuthPassword $password): bool
+    public static function login(AuthUser $authUser): self
     {
-        return $this->password->isEquals($password);
+        $authUser->record(new AuthUserLoggedDomainEvent(
+            $authUser->id()->value(),
+            $authUser->username()->value()
+        ));
+
+        return $authUser;
+    }
+
+    public function passwordMatches(AuthPlainPassword $password): bool
+    {
+        return $this->password->validatePassword($password->value());
     }
 
     public function id(): AuthId
