@@ -11,3 +11,6 @@
 .phpunit.result.cache
 
 /build
+
+/etc/jwt/keys/*
+!/etc/jwt/keys/.git-keep
