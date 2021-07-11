@@ -23,24 +23,9 @@ final class AuthRegisterPostController extends ApiController
     {
         $username = $request->request->getAlpha('username');
         $password = $request->request->getAlpha('password');
-        $authUser = null;
-
-        try {
-            $authUser = $this->ask(new FindAuthUserQuery($username));
-        } catch (HandlerFailedException $handlerFailedException) {
-            if (AuthUserNotFound::class !== $handlerFailedException->getPrevious()::class) {
-                throw $handlerFailedException;
-            }
-        }
-
-        if (null !== $authUser) {
-            throw new AuthUserAlreadyRegistered(new AuthUsername($username));
-        }
 
         $uuidGenerator   = new RamseyUuidGenerator();
         $id              = $uuidGenerator->generate();
-        $passwordEncoder = new PhpPasswordEncoder();
-        $password        = $passwordEncoder->encode($password);
 
         $this->dispatch(
             new RegistrarUserCommand(

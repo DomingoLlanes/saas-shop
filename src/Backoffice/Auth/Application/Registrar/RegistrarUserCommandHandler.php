@@ -6,7 +6,7 @@ namespace ShopSaas\Backoffice\Auth\Application\Registrar;
 
 
 use ShopSaas\Backoffice\Auth\Domain\AuthId;
-use ShopSaas\Backoffice\Auth\Domain\AuthPassword;
+use ShopSaas\Backoffice\Auth\Domain\AuthPlainPassword;
 use ShopSaas\Backoffice\Auth\Domain\AuthUsername;
 use ShopSaas\Shared\Domain\Bus\Command\CommandHandler;
 
@@ -20,7 +20,7 @@ class RegistrarUserCommandHandler implements CommandHandler
     {
         $id       = new AuthId($command->id());
         $username = new AuthUsername($command->username());
-        $password = new AuthPassword($command->password());
+        $password = new AuthPlainPassword($command->password());
 
         $this->registrar->__invoke($id, $username, $password);
     }
