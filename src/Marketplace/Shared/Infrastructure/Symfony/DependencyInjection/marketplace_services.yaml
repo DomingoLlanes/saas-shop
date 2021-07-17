@@ -17,3 +17,5 @@ services:
 
   # Courses
   ShopSaas\Marketplace\Courses\Domain\CourseRepository: '@ShopSaas\Marketplace\Courses\Infrastructure\Persistence\DoctrineCourseRepository'
+  # Customer
+  ShopSaas\Marketplace\Customer\Domain\CustomerRepository: '@ShopSaas\Marketplace\Customer\Infrastructure\Persistence\DoctrineCustomerRepository'
